@@ -56,11 +56,12 @@ class ThreadSafeSingleton {
     
     public:
     static ThreadSafeSingleton* getInstance() {
-        lock_guard<mutex> guard(lock);
+        unique_lock<mutex> guard(lock);
         if (instance == nullptr) {
             instance = new ThreadSafeSingleton();
         }
         return instance;
+        guard.unlock();
     }
 };
 
